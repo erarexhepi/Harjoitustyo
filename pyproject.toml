@@ -1,16 +1,14 @@
 [tool.poetry]
-name = "kps-ai"
+name = "harjoitustyo"
 version = "0.1.0"
-description = "kivi-sakset-paperi- pelin oppiva AI- projekti"
-authors = ["Era Rexhepi <era.rexhepi11@gmail.com>"]
-license = "MIT"
-readme = "README.md"
+description = "Kivi-Sakset-Paperi tekoälyprojekti"
+authors = ["Etunimi Sukunimi <sähköposti@example.com>"]
+packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 
-
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.dev-dependencies]
 pytest = "^8.4.1"
 
 [build-system]
@@ -18,5 +16,5 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
-
+pythonpath = ["."]
+testpaths = ["tests"]
