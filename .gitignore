@@ -1,8 +1,9 @@
-
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.pyc
+*.pyo
+*.pyd
 
 .Python
 build/
@@ -24,13 +25,11 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-
 *.manifest
 *.spec
 
 pip-log.txt
 pip-delete-this-directory.txt
-
 
 htmlcov/
 .tox/
@@ -62,7 +61,6 @@ docs/_build/
 
 target/
 
-
 .ipynb_checkpoints
 
 profile_default/
@@ -70,12 +68,9 @@ ipython_config.py
 
 .python-version
 
-
 .pdm.toml
 
-
 __pypackages__/
-
 
 celerybeat-schedule
 celerybeat.pid
@@ -90,7 +85,6 @@ ENV/
 env.bak/
 venv.bak/
 
-
 .spyderproject
 .spyproject
 
@@ -102,7 +96,6 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-
 .pyre/
 
 .pytype/
@@ -110,26 +103,18 @@ dmypy.json
 cython_debug/
 
 .idea/
-
 .vscode/
 
 .DS_Store
-
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
 *~
-
 *.tmp
 *.bak
 *.swp
 *~.nib
 
-docs/_build/
-
 *.pdf
 *.docx
-
-*.tmp
-*.bak
