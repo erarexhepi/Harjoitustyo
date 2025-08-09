@@ -12,14 +12,14 @@ class MarkovAI:
         
         self.history = []
         self.max_depth = max_depth
+        self.current_model = None 
+        self.model_games_left = 0 
 
     def update_history(self, player_move: str):
         self.history.append(player_move)
         
-        #päivitä siirtymälaskurit kaikille asteille
         for depth in range(1, min(len(self.history), self.max_depth) + 1):
             if len(self.history) > depth:
-                #depth-pituinen sekvenssi historiasta
                 sequence = tuple(self.history[-depth-1:-1])
                 next_move = self.history[-1]
                 self.transition_counts[depth][sequence][next_move] += 1
@@ -40,35 +40,67 @@ class MarkovAI:
                     
         return predictions
 
-    def counter_move(self):
+    def select_best_model(self):
         predictions = self.predict_next()
         
         if not predictions:
+            return None
+        
+        best_model = None
+        best_win_rate = -1
+        
+        for depth in predictions.keys():
+            stats = self.win_stats[depth]
+            if stats['total'] >= 3:  # Vähintään 3 peliä dataa
+                win_rate = stats['wins'] / stats['total']
+                if win_rate > best_win_rate:
+                    best_win_rate = win_rate
+                    best_model = depth
+        
+        if best_model is None and predictions:
+            best_model = max(predictions.keys())
+            
+        return best_model
+
+    def counter_move(self):
+        
+        if self.model_games_left <= 0:
+            self.current_model = self.select_best_model()
+            self.model_games_left = 5 
+        
+        self.model_games_left -= 1
+        
+        # Jos ei ole mallia, arvotaan
+        if self.current_model is None:
             return random.choice(["kivi", "sakset", "paperi"])
         
-        # Käytä syvintä ennustetta
-        depth = max(predictions.keys())
-        prediction = predictions[depth]
+        predictions = self.predict_next()
         
+        if self.current_model not in predictions:
+            return random.choice(["kivi", "sakset", "paperi"])
+        
+        prediction = predictions[self.current_model]
+        
+        # Vastaliike ennustetulle siirrolle
         counters = {
             "kivi": "paperi",
-            "paperi": "sakset",
+            "paperi": "sakset", 
             "sakset": "kivi"
         }
         return counters[prediction]
 
     def update_win_stats(self, player_move: str, ai_move: str):
+        if self.current_model is None:
+            return
+            
         predictions = self.predict_next()
         
-        # Määritä voittiko AI
-        ai_won = self._ai_wins(player_move, ai_move)
-        
-        for depth in predictions.keys():
-            self.win_stats[depth]['total'] += 1
-            if ai_won:
-                self.win_stats[depth]['wins'] += 1
+        if self.current_model in predictions:
+            ai_won = self._ai_wins(player_move, ai_move)
             
-            break
+            self.win_stats[self.current_model]['total'] += 1
+            if ai_won:
+                self.win_stats[self.current_model]['wins'] += 1
 
     def _ai_wins(self, player_move: str, ai_move: str) -> bool:
         if player_move == ai_move:
@@ -97,3 +129,9 @@ class MarkovAI:
                 'total': total
             }
         return stats
+    
+    def get_current_model_info(self):
+        return {
+            'current_model': self.current_model,
+            'games_left': self.model_games_left
+        }

@@ -127,11 +127,20 @@ AI oppii pelityylistäsi ja yrittää ennustaa seuraavan siirtosi!
         
         # AI:n oppimistilastot
         ai_stats = self.ai.get_stats()
+        model_info = self.ai.get_current_model_info()
+        
         print("AI:N OPPIMISTILASTOT:")
         print("="*50)
         for depth, stat in ai_stats.items():
             if stat['total'] > 0:
-                print(f"Aste {depth} (historia {depth} siirtoa): {stat['win_rate']:.1%} ({stat['wins']}/{stat['total']})")
+                current_marker = " ← KÄYTÖSSÄ" if depth == model_info['current_model'] else ""
+                print(f"Aste {depth} (historia {depth} siirtoa): {stat['win_rate']:.1%} ({stat['wins']}/{stat['total']}){current_marker}")
+        
+        if model_info['current_model']:
+            print(f"\nNykyinen malli: Aste {model_info['current_model']}")
+            print(f"Kierroksia jäljellä mallilla: {model_info['games_left']}")
+        else:
+            print("\nEi aktiivista mallia (käytetään satunnaisia siirtoja)")
         
         # Viimeisimmät pelit
         if len(self.stats.game_history) > 0:
@@ -155,7 +164,6 @@ AI oppii pelityylistäsi ja yrittää ennustaa seuraavan siirtosi!
         print("="*60)
     
     def determine_winner(self, player_move: str, ai_move: str) -> Tuple[str, str]:
-        """Määritä voittaja ja palauta (result, message)"""
         if player_move == ai_move:
             return "tie", f"🤝 TASAPELI! Molemmat valitsivat {self.MOVES[player_move]['emoji']}"
         elif self.MOVES[player_move]['beats'] == ai_move:
@@ -164,11 +172,9 @@ AI oppii pelityylistäsi ja yrittää ennustaa seuraavan siirtosi!
             return "ai", f"😤 HÄVISIT! {self.MOVES[ai_move]['emoji']} voittaa {self.MOVES[player_move]['emoji']}"
     
     def play_round(self) -> bool:
-
         print(f"\n KIERROS {self.stats.total_games + 1}")
         print("-" * 30)
         
-        # Hae pelaajan siirto
         player_move = self.get_player_move()
         if player_move == 'quit':
             return False
@@ -188,6 +194,9 @@ AI oppii pelityylistäsi ja yrittää ennustaa seuraavan siirtosi!
         win_pct = self.stats.get_win_percentage()
         print(f"\nTilanne: Sinä {self.stats.player_wins} - {self.stats.ai_wins} AI (voitto% {win_pct:.1f}%)")
         
+        model_info = self.ai.get_current_model_info()
+        if model_info['current_model']:
+            print(f"AI käyttää mallia: Aste {model_info['current_model']} ({model_info['games_left']} kierrosta jäljellä)")
         
         return True
     
@@ -215,30 +224,30 @@ AI oppii pelityylistäsi ja yrittää ennustaa seuraavan siirtosi!
         elif self.stats.get_win_percentage() > 40:
             print("\n  Tasainen taistelu!")
         else:
-            print("\nAI dominoi peliä!.")
+            print("\nAI dominoi peliä!")
         
-        print("\nKiitos pelistä! 👋")
+        print("\nKiitos pelistä!")
     
     def main_game_loop(self):
         """Pelin pääsilmukka"""
         self.print_banner()
         self.print_moves_guide()
         
-        print(" Kirjoita 'help' saadaksesi ohjeita tai 'quit/q' lopettaaksesi.\n")
+        print(" Kirjoita 'help' saadaksesi ohjeita tai 'quit/q' lopettaaksesi.")
+        print(" AI käyttää parhaiten menestynyttä mallia 5 kierrosta kerrallaan.\n")
         
         try:
             while True:
                 if not self.play_round():
                     break
                 
-                # Kysy haluaako jatkaa (joka 5. kierroksella)
                 if self.stats.total_games > 0 and self.stats.total_games % 5 == 0:
                     continue_game = input(f"\n🤔 Jatketaanko? (y/n): ").strip().lower()
                     if continue_game in ['n', 'no', 'ei']:
                         break
         
         except KeyboardInterrupt:
-            print("\n\n⚠️  Peli keskeytetty!")
+            print("\n\n  Peli keskeytetty!")
         
         finally:
             self.show_final_stats()
