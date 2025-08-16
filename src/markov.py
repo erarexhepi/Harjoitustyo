@@ -90,17 +90,16 @@ class MarkovAI:
         return counters[prediction]
 
     def update_win_stats(self, player_move: str, ai_move: str):
-        if self.current_model is None:
-            return
-            
+        """Päivittää tilastoja kaikille malleille joilla oli ennuste"""
         predictions = self.predict_next()
         
-        if self.current_model in predictions:
+        # Käy läpi kaikki mallit joilla oli ennuste
+        for depth in predictions:
             ai_won = self._ai_wins(player_move, ai_move)
             
-            self.win_stats[self.current_model]['total'] += 1
+            self.win_stats[depth]['total'] += 1
             if ai_won:
-                self.win_stats[self.current_model]['wins'] += 1
+                self.win_stats[depth]['wins'] += 1
 
     def _ai_wins(self, player_move: str, ai_move: str) -> bool:
         if player_move == ai_move:
