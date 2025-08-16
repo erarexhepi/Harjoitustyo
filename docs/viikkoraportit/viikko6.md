@@ -37,8 +37,10 @@ Kokonaisuudessaan projekti vahvisti ymmärrystäni siitä, että oppivan järjes
 ## Mikä oli vaikeaa?
 
 Suurin haaste oli dokumentaation kirjoittaminen. Dokumentaation kirjoittamiseen meni paljon aikaa. Jälkeinpäin katsottuna olisi pitänyt aloittaa dokumentaation kirjoittaminen aikaisemmin.
----
 
+
+
+---
 ## Mitä teen seuraavaksi?
 
 Projekti on mielestäni melkein valmis palautettavaksi. Seuraavaksi teen hieman korjauksia testausraporttiin sekä otan vastaan palautetta ja korjaan projektiani sen mukaan.
