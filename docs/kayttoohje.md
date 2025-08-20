@@ -106,6 +106,6 @@ python3 test_performance.py
 ## Lisätiedot
 
 Lisätietoja algoritmin toiminnasta ja teknisistä yksityiskohdista löydät:
-- `docs/toteutusraportti.md` 
-- `docs/testausraporti.md`
-- `docs/maarittelydokumentti.md`
+- [Määrittelydokumentti](docs/maarittelydokumentti.md)
+- [Testausdokumentaatio](docs/testausraportti.md)
+- [Toteutusdokumentaatio](docs/toteutusraportti.md)
