@@ -22,7 +22,7 @@
 
 3. **Käynnistä peli:**
    ```bash
-   python main.py
+   python3 main.py
    ```
 
 ## Pelin käyttö
@@ -90,12 +90,6 @@ Peli ohittaa tyhjät syötteet ja välilyönnit automaattisesti.
 
 ## Testien suorittaminen
 
-### Kaikki testit
-```bash
-pytest
-```
-
-### Yksittäiset testitiedostot
 ```bash
 python3 test_markov.py
 
@@ -106,12 +100,12 @@ python3 test_performance.py
 
 ### Testikattavuus
 ```bash
-pytest --cov=src
+ python3 -m pytest --cov=src --cov-report=html --cov-report=term test_*.py
 ```
 
 ## Lisätiedot
 
 Lisätietoja algoritmin toiminnasta ja teknisistä yksityiskohdista löydät:
-- `docs/toteutusraportti.md` - Tekninen toteutus
-- `docs/testausraporti.md` - Testausstrategia
-- `docs/maarittelydokumentti.md` - Projektin määrittely
+- `docs/toteutusraportti.md` 
+- `docs/testausraporti.md`
+- `docs/maarittelydokumentti.md`
