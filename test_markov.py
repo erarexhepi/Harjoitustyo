@@ -223,7 +223,7 @@ def run_all_tests():
     if success:
         print("KAIKKI TESTIT ONNISTUIVAT!")
         print("\nVoit nyt ajaa pelin komennolla:")
-        print("python main.py")
+        print("python3 main.py")
     else:
         print("Jotkut testit epäonnistuivat")
         print("Tarkista virheet ja korjaa ne ennen jatkamista")
